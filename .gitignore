@@ -1,0 +1,19 @@
+# Build artifacts
+*.exe
+*.obj
+*.o
+*.d
+
+# Data files (generated at runtime)
+data/users.dat
+data/users.dat.tmp
+
+# Build directories
+build/
+cmake-build-*/
+.vs/
+.vscode/
+
+# OS files
+Thumbs.db
+.DS_Store
