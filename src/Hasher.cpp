@@ -91,12 +91,22 @@ std::string Hasher::toHex(const std::array<uint8_t, DIGEST_SIZE>& digest) {
     return oss.str();
 }
 
+#include <chrono>
+
 // ---------------------------------------------------------------------------
 //  Public API
 // ---------------------------------------------------------------------------
 std::string Hasher::generateSalt() {
-    std::random_device rd;
-    std::mt19937_64 gen(rd());
+    // Seed using both random_device and high-resolution timer to guarantee
+    // entropy even on platforms/compilers with pseudo-deterministic random_device
+    static thread_local std::mt19937_64 gen([]() {
+        std::random_device rd;
+        uint64_t seed1 = rd();
+        uint64_t seed2 = static_cast<uint64_t>(
+            std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        return seed1 ^ (seed2 + 0x9e3779b97f4a7c15ULL + (seed1 << 6) + (seed1 >> 2));
+    }());
+
     std::uniform_int_distribution<int> dist(0, 255);
 
     std::ostringstream oss;

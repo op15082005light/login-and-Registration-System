@@ -43,10 +43,22 @@ login-system/
 ### Using g++ (MinGW / GCC)
 
 ```bash
-g++ -std=c++14 -Wall -Wextra -O2 -Iinclude \
+g++ -std=c++17 -Wall -Wextra -O2 -Iinclude \
     src/Hasher.cpp src/User.cpp src/UserDatabase.cpp \
     src/InputValidator.cpp src/Auth.cpp src/Dashboard.cpp \
     src/main.cpp -o login_system.exe
+```
+
+### Running the Test Suites
+
+```bash
+# Core NIST cryptographic and unit tests
+g++ -std=c++17 -Iinclude tests/test_suite.cpp src/Hasher.cpp src/User.cpp src/UserDatabase.cpp src/InputValidator.cpp src/Auth.cpp src/Dashboard.cpp -o test_runner.exe
+./test_runner.exe
+
+# Edge cases & boundary verification suite
+g++ -std=c++17 -Iinclude tests/test_edge_cases.cpp src/Hasher.cpp src/User.cpp src/UserDatabase.cpp src/InputValidator.cpp src/Auth.cpp src/Dashboard.cpp -o test_edge_cases.exe
+./test_edge_cases.exe
 ```
 
 ### Using CMake

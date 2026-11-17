@@ -27,4 +27,10 @@ public:
 
     // Read a password from stdin (masked with asterisks on Windows, hidden on POSIX)
     static std::string readPassword(const std::string& prompt);
+
+    // Check if input stream reached EOF
+    static bool isEOF();
+
+    // Normalize username to lowercase for case-insensitive uniqueness
+    static std::string normalize(const std::string& str);
 };

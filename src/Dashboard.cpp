@@ -42,6 +42,10 @@ void Dashboard::show(const std::string& username) {
                   << "  [3] Logout\n";
 
         std::string choice = InputValidator::readLine("  Select > ");
+        if (InputValidator::isEOF()) {
+            std::cout << "\n  [INFO] Stream closed. Logging out.\n";
+            break;
+        }
 
         if (choice == "1") {
             viewAccountInfo(username);

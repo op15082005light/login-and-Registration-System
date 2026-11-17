@@ -43,6 +43,8 @@ std::pair<bool, std::string>
 InputValidator::validatePassword(const std::string& password) {
     if (password.size() < 8)
         return {false, "Password must be at least 8 characters."};
+    if (password.size() > 128)
+        return {false, "Password must not exceed 128 characters."};
 
     bool hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
     for (char c : password) {
@@ -126,4 +128,15 @@ std::string InputValidator::readPassword(const std::string& prompt) {
 #endif
 
     return password;
+}
+
+bool InputValidator::isEOF() {
+    return std::cin.eof();
+}
+
+std::string InputValidator::normalize(const std::string& str) {
+    std::string result = str;
+    std::transform(result.begin(), result.end(), result.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    return result;
 }

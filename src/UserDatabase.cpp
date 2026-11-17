@@ -9,6 +9,24 @@
 #include <iostream>
 #include <stdexcept>
 
+#ifdef _WIN32
+#  include <direct.h>
+#else
+#  include <sys/stat.h>
+#endif
+
+static void ensureDirectoryExists(const std::string& filePath) {
+    size_t pos = 0;
+    while ((pos = filePath.find_first_of("/\\", pos + 1)) != std::string::npos) {
+        std::string subDir = filePath.substr(0, pos);
+#ifdef _WIN32
+        _mkdir(subDir.c_str());
+#else
+        mkdir(subDir.c_str(), 0755);
+#endif
+    }
+}
+
 UserDatabase::UserDatabase(const std::string& filePath)
     : filePath_(filePath) {}
 
@@ -43,6 +61,7 @@ bool UserDatabase::load() {
 }
 
 bool UserDatabase::save() const {
+    ensureDirectoryExists(filePath_);
     const std::string tmpPath = filePath_ + ".tmp";
 
     {

@@ -33,7 +33,10 @@ int main() {
 
         std::string choice;
         std::cout << "  Select > ";
-        std::getline(std::cin, choice);
+        if (!std::getline(std::cin, choice)) {
+            std::cout << "\n  [INFO] Stream closed. Exiting.\n";
+            break;
+        }
 
         if (choice == "1") {
             auth.registerUser();
